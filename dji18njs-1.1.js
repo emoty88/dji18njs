@@ -45,6 +45,38 @@
                     return String(obj.shift())
                 });
             }
+        },
+        interpolateMulti: function(fmt, arr, named, dlm){
+            fmt = this.get_msg(fmt);
+            if(dlm == undefined)
+            {
+                dlm="\n"; 	
+            }
+            if(named){
+            	var finalTmp="";
+            	for (var i=0;i<arr.length;i++)
+            	{
+            		obj=arr[i];
+	                finalTmp+= fmt.replace(/%\(\w+\)s/g, function(match){
+	                    var replace_val = String(obj[match.slice(2,-2)]);
+	                    if( replace_val == 'undefined'){
+	                        return "?" + match + "?";
+	                    }
+	                    return replace_val;
+	                })+dlm;
+               }
+               return finalTmp;
+            } else {
+            	var finalTmp="";
+            	for (var i=0;i<arr.length;i++)
+            	{
+            		obj=arr[i];
+	                finalTmp+=  fmt.replace(/%s/g, function(match){
+	                    return String(obj.shift())
+	                })+dlm;
+               }
+               return finalTmp;
+            }
         }
     }
 })();
